@@ -6,6 +6,10 @@
 ## Module 2: Graphics
 
 library(burnr)
+
+
+# Basic plotting ----------------------------------------------------------
+
 data(pgm)
 
 #' Make a simple plot
@@ -131,3 +135,77 @@ ggsave("Output/Shrubfields_Fig6.tiff", device="tiff", width=4, height=6, dpi=300
 
 #' To add the composites from individual sites to that site within the facet, see the wiki page:
 #' https://github.com/ltrr-arizona-edu/burnr/wiki/burnr-Cookbook#facetcomposite
+
+
+# FHAES-style graph -------------------------------------------------------
+
+library(patchwork)
+#' patchwork is available from
+#' https://github.com/thomasp85/patchwork
+#' devtools::install_github("thomasp85/patchwork")
+#' It's still under development, and loading the library can
+#' be a real pain. Be patient, and use iteration. It takes some
+#' time, but there are some nice benefits
+
+library(ggrepel) # For labeling
+library(scales)
+
+#' For data, let's use a single site from the shrubfields
+snn_fhx <- read_fhx('Data/SNN.fhx')
+snn_fhx <- sort(snn_fhx)
+
+#' Start with percent trees scarred timeseries
+
+snn_perc <- percent_scarred(snn_fhx)
+
+#' We're going to add year labels to identify certain fire events, based on filtering
+yr_labs <- snn_perc[snn_perc$num_scars > 1 & snn_perc$percent_scarred >= 25, ] 
+wide_labs <- snn_perc[snn_perc$num_scars > 1 & snn_perc$percent_scarred >= 45, ] 
+
+#' Patchwork operates by adding saved ggplot graph objects together, so we make each of the 3 sections
+#' separatey
+
+p <- ggplot() + 
+  geom_col(data=snn_perc, aes(x=year, y=percent_scarred)) +
+  xlim(1550, 2020) +
+  geom_text(data=wide_labs, aes(x=year, y=percent_scarred+5, label=year, angle=35),
+            size=2, nudge_x = 5) +
+  scale_y_continuous(name = "% trees\nscarred", limits=c(0, 100), expand=c(0, 0)) +
+  scale_x_continuous(position = "top", limits=c(1550, 2020)) +
+  theme_bw() +
+  theme(plot.margin = unit(c(0, 0, 0, 0), "cm"),
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+f <- plot_demograph(snn_fhx, yearlims = c(1550, 2020), composite_rug = TRUE,
+                    filter_prop = 0.25, filter_min_events = 2, ylabels = FALSE,
+                    plot_legend = TRUE) + 
+  theme(plot.margin = unit(c(0, 0, 0, 0), "cm"),
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        legend.position = c(.15, .75))
+
+l <- ggplot() +
+  geom_text_repel(data=yr_labs, aes(x=year, 
+                                    y=rep(1, nrow(yr_labs)),
+                                    label = year, angle = -85), size=2.5,
+                  direction = "y", segment.size = 0.5, segment.alpha=.5,
+                  force=10) +
+  scale_x_continuous(name="Year", limits = c(1550, 2020), breaks = seq(1500, 2000, 100)) +
+  ylab("") + xlab("Year") +
+  scale_y_continuous(limits=c(0, 1), expand=c(0, 0), breaks = c(0, 1), labels = NULL, 
+                     minor_breaks = NULL, name = "\n\nComposite\nfire years") +
+  theme(plot.margin = unit(c(0, 0, 0, 0), "cm"), panel.background = element_blank(),
+        axis.ticks.y = element_blank(), panel.grid.major.x = element_line(linetype=1, color="grey90", size=.5),
+        axis.line.x.bottom = element_line())
+
+#' Stack them up, with adjustable heights
+
+p + f + l + plot_layout(ncol=1, heights=c(1, 6, 1))
+
+#' To save this, ggsave won't work, so go old-school
+
+tiff('Output/FHAES-style.tiff', width=6, height=8, units='in', res=150, type='cairo')
+p + f + l + plot_layout(ncol=1, heights=c(1, 6, 1))
+dev.off()
