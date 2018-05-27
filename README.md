@@ -1,6 +1,10 @@
 # burnr_demo
 Educational demonstration of the burnr R package
 
+This demo is broken into 5 short modules that extend basic burnr functionality into advanced graphics, analyses, and demography. Emphasis is on plotting, where data visualization is important for understanding ecological pattern and process.
+
+All necessary datasets are provided. Users may have to add other R libraries (packages) to enable some scripts to run. New libraries can be downloaded within RStudio, or with install.packages("PackageName"). This only needs to be done once to download the library.
+
 To obtain a copy of this R project and run the code on your machine, you will need to fork the repository.
 
 In RStudio, go to File > New Project, and choose “Version Control”, select “Git”, and paste the repository url:
