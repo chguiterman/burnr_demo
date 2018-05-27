@@ -85,7 +85,7 @@ all.fhx <- mpb + rdc + snn + sns + spc
 
 #' Identify sites for faceting and filter metadata
 trees$SiteID <- substr(trees$series, start=1, stop=3)
-trees <- trees[trees$series %in% unique(all.fhx$series), ]
+trees <- trees[trees$series %in% series_names(all.fhx), ]
 
 #' Create site composites
 mpb.comp <- composite(mpb, filter_min_rec = 2, filter_min_events = 2, filter_prop = .10, injury_event = TRUE, comp_name = "MPB")
