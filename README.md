@@ -14,3 +14,4 @@ You can now open and run the code. The datasets are housed within the project, s
 
 If you'd like to contribute to this demo page, please fork the repository and submit pull requests. See here for more info: http://r-bio.github.io/intro-git-rstudio/
 
+A copy of the article (Malevich et al. 2018) describing burnr is provided for additional help.
