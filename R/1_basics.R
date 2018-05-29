@@ -40,7 +40,7 @@ View(pgm)
 head(pgm)
 
 #' tree-level summaries are provided by
-series_stats(pgm)
+head(series_stats(pgm))
 
 #' series (tree) names are provided by
 series_names(pgm)
