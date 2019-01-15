@@ -139,13 +139,8 @@ ggsave("Output/Shrubfields_Fig6.tiff", device="tiff", width=4, height=6, dpi=300
 
 # FHAES-style graph -------------------------------------------------------
 
-library(patchwork)
-#' patchwork is available from
-#' https://github.com/thomasp85/patchwork
-#' devtools::install_github("thomasp85/patchwork")
-#' It's still under development, and loading the library can
-#' be a real pain. Be patient, and use iteration. It takes some
-#' time, but there are some nice benefits
+library(burnr)
+library(ggpubr)
 
 library(ggrepel) # For labeling
 library(scales)
@@ -162,8 +157,7 @@ snn_perc <- percent_scarred(snn_fhx)
 yr_labs <- snn_perc[snn_perc$num_scars > 1 & snn_perc$percent_scarred >= 25, ] 
 wide_labs <- snn_perc[snn_perc$num_scars > 1 & snn_perc$percent_scarred >= 45, ] 
 
-#' Patchwork operates by adding saved ggplot graph objects together, so we make each of the 3 sections
-#' separatey
+#' The graph is actually 3 mashed-together plots, each one needs to be drawn separately
 
 p <- ggplot() + 
   geom_col(data=snn_perc, aes(x=year, y=percent_scarred)) +
@@ -177,6 +171,7 @@ p <- ggplot() +
         axis.title.x=element_blank(),
         axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
+
 f <- plot_demograph(snn_fhx, yearlims = c(1550, 2020), composite_rug = TRUE,
                     filter_prop = 0.25, filter_min_events = 2, ylabels = FALSE,
                     plot_legend = TRUE) + 
@@ -196,16 +191,17 @@ l <- ggplot() +
   ylab("") + xlab("Year") +
   scale_y_continuous(limits=c(0, 1), expand=c(0, 0), breaks = c(0, 1), labels = NULL, 
                      minor_breaks = NULL, name = "\n\nComposite\nfire years") +
-  theme(plot.margin = unit(c(0, 0, 0, 0), "cm"), panel.background = element_blank(),
-        axis.ticks.y = element_blank(), panel.grid.major.x = element_line(linetype=1, color="grey90", size=.5),
+  theme(plot.margin = unit(c(0, 0, 0, 0), "cm"), 
+        panel.background = element_blank(),
+        axis.ticks.y = element_blank(), 
+        panel.grid.major.x = element_line(linetype=1, color="grey90", size=.5),
         axis.line.x.bottom = element_line())
 
 #' Stack them up, with adjustable heights
+#' Then add annotation
 
-p + f + l + plot_layout(ncol=1, heights=c(1, 6, 1))
+fh <- ggarrange(p, f, l, nrow=3, align='v', heights=c(1, 6, 1))
+annotate_figure(fh, top=text_grob("Señorito North", face='bold', size=14),
+                left = text_grob("Fire-scarred\ntrees", size=11, rot=90, x=1.75, y=0.6, hjust=0.5))
 
-#' To save this, ggsave won't work, so go old-school
-
-tiff('Output/FHAES-style.tiff', width=6, height=8, units='in', res=150, type='cairo')
-p + f + l + plot_layout(ncol=1, heights=c(1, 6, 1))
-dev.off()
+ggsave('Output/FHAES-style.tiff', width=8.5, height=6, units='in', dpi=150, device = 'tiff')
