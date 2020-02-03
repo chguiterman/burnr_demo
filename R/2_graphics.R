@@ -6,6 +6,7 @@
 ## Module 2: Graphics
 
 library(burnr)
+library(ggplot2)
 
 
 # Basic plotting ----------------------------------------------------------
