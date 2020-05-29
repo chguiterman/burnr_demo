@@ -42,10 +42,10 @@ plot(pgm_interv, binwidth=5)
 boxplot(pgm_interv$intervals)
 
 # Check out seasonality
-pgm_seasons <- count_event_position(pgm)
+pgm_seasons <- count_event_position(pgm, drop_unknown = TRUE)
 print(pgm_seasons)
 
-ggplot(pgm_seasons) + geom_bar(aes(x=event, y=count), stat='identity')
+ggplot(pgm_seasons) + geom_bar(aes(x=event, y=prop), stat='identity')
 
 
 # Superposed Epoch Analysis -----------------------------------------------
