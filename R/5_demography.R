@@ -37,10 +37,12 @@ age_dat <- merge(age_fhx, trees, by='series')
 
 #' Compile pith dates by site and species
 
-site_dem <- age_dat %>% group_by(SiteID, SpeciesID, year) %>% 
+site_dem <- age_dat %>% 
+  group_by(SiteID, SpeciesID, year) %>% 
   summarize(freq = n_distinct(series))
 
-ggplot(site_dem) + geom_col(aes(x=as.numeric(year), y=freq, fill=SpeciesID)) +
+ggplot(site_dem) + 
+  geom_col(aes(x=as.numeric(year), y=freq, fill=SpeciesID)) +
   xlim(1830, 1950) +
   labs(x="Year", y="Number of stems") +
   facet_grid(SiteID~., scales='free_y')
