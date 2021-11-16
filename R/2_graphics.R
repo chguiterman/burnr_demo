@@ -125,7 +125,7 @@ p2 <- plot_demograph(all, color_group=trees.all$SpeciesID, color_id=trees.all$se
                      yearlims= c(1500,1995),
                      facet_type='grid')
 p2 + scale_color_manual(values=col.sel, breaks = c("JUSC", "PIPO", "PIST", "POTR", "QUGA")) + 
-  guides(linetype = FALSE, shape = FALSE, size = FALSE) +
+  guides(linetype = "none", shape = "none", size = "none") +
   theme(legend.justification = "center", legend.position = "top",
         legend.direction="horizontal", legend.background=element_rect(fill='white'),
         legend.margin=margin(0, unit="pt"),
