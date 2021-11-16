@@ -16,7 +16,7 @@ library(burnr)
 #' If you're looking for new features, check out the development version of burnr before it goes up to CRAN
 
 library(devtools)
-install_github("ltrr-arizona-edu/burnr@dev")
+install_github("ltrr-arizona-edu/burnr")
 
 
 # Obtaining and loading data ----------------------------------------------
@@ -50,7 +50,7 @@ series_names(pgm)
 #' There are currently 19 rec_type levels
 levels(pgm$rec_type)
 
-#' Oportuities to modify and edit fhx objects abound.
+#' Opportunities to modify and edit fhx objects abound.
 delete(lgr2, s = 'LGR46')             # Remove series.
 delete(lgr2, yr = 1752)               # Remove year from all series.
 delete(lgr2, s = 'LGR46', yr = 1752)  # Remove year from select series.
