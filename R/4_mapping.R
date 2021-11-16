@@ -23,7 +23,7 @@ p <- ggplot() +
 
 p
 
-# Combine the fhx object wiht the metadata so we can map the ring data
+# Combine the fhx object with the metadata so we can map the ring data
 pgm_loc <- inner_join(pgm, pgm_meta, by = c("series" = "TreeID")) %>% 
   st_as_sf(coords = c("Longitude", "Latitude"),
            crs = 4326)
