@@ -70,7 +70,7 @@ source("R/SEA_Helper_FUNS.R")
 pgm_sea_sig <- sea_sig(pgm.sea$departure)
 
 ggplot(pgm_sea_sig, aes(x=lag)) + geom_col(aes(y=mean, fill=sig), width=.7) +
-  scale_fill_manual(values=sea_cols, guide=FALSE) + 
+  scale_fill_manual(values=sea_cols, guide="none") + 
   scale_x_continuous(name="Lag year", breaks=seq(-4, 2, 1), labels=seq(-4, 2, 1)) +
   ylab("PDSI departure") +
   geom_line(aes(y=upper_95_perc)) + geom_line(aes(y=lower_95_perc)) + 
@@ -79,14 +79,3 @@ ggplot(pgm_sea_sig, aes(x=lag)) + geom_col(aes(y=mean, fill=sig), width=.7) +
   theme(panel.grid.minor=element_blank(), axis.text = element_text(size=16), axis.title=element_text(size=18),
         strip.text = element_text(size=11), plot.title=element_text(size=18))
 ggsave("Output/PGM_SEA.tiff", device="tiff", width=4, height=4, dpi=300)
-
-
-# Replicate the SEA from Dr. Falk's demo:
-zmt <- read_fhx('http://www.ltrr.arizona.edu/~sheppard/presession/ZMT.FHX')
-
-pdsi <- read.csv('http://www.ltrr.arizona.edu/~sheppard/presession/NADA GP119 1350-1900.csv', 
-                 row.names = 1)
-
-zmt.comp <- composite(zmt, filter_prop = .25, filter_min_rec = 1, filter_min_events = 2)
-
-plot(sea(pdsi, zmt.comp))
