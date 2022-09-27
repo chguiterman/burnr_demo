@@ -1,6 +1,9 @@
 # burnr_demo
 Educational demonstration of the `burnr` R package
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7117418.svg)](https://doi.org/10.5281/zenodo.7117418)
+
+
 This demo includes 5 short modules that extend basic `burnr` functionality into advanced graphics, analyses, and forest demography. Emphasis is on graphical visualization for its importance in seeing ecological pattern and process.
 
 All necessary datasets are provided. Users may have to install some R libraries (packages) on their machines to enable some scripts to run. New libraries can be downloaded within RStudio, or with `install.packages("PackageName")`. This only needs to be done once to download the library.
