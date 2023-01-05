@@ -58,6 +58,8 @@ data("pgm_pdsi")
 
 head(pgm_pdsi)
 
+my_year <- c(1748, 1813, 1822, 1851, 1904)
+
 #' Run SEA with the sea function, and make an object for later visuals
 pgm.sea <- sea(x = pgm_pdsi, event = pgm.comp, nbefore = 4, nafter = 2)
 
@@ -75,7 +77,7 @@ ggplot(pgm_sea_sig, aes(x=lag)) + geom_col(aes(y=mean, fill=sig), width=.7) +
   ylab("PDSI departure") +
   geom_line(aes(y=upper_95_perc)) + geom_line(aes(y=lower_95_perc)) + 
   geom_line(aes(y=upper_99_perc), linetype=3) + geom_line(aes(y=lower_99_perc), linetype=3) +
-  ylim(-2, 2) + theme_bw() +
+  ylim(-2.5, 2) + theme_bw() +
   theme(panel.grid.minor=element_blank(), axis.text = element_text(size=16), axis.title=element_text(size=18),
         strip.text = element_text(size=11), plot.title=element_text(size=18))
 ggsave("Output/PGM_SEA.tiff", device="tiff", width=4, height=4, dpi=300)
