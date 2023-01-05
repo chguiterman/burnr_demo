@@ -42,6 +42,8 @@ head(pgm)
 #' tree-level summaries are provided by
 head(series_stats(pgm))
 
+pgm_stats <- series_stats(pgm)
+
 #' series (tree) names are provided by
 series_names(pgm)
 
@@ -51,7 +53,7 @@ series_names(pgm)
 levels(pgm$rec_type)
 
 #' Opportunities to modify and edit fhx objects abound.
-delete(lgr2, s = 'LGR46')             # Remove series.
+lgr2_edit <- delete(lgr2, s = 'LGR46')             # Remove series.
 delete(lgr2, yr = 1752)               # Remove year from all series.
 delete(lgr2, s = 'LGR46', yr = 1752)  # Remove year from select series.
 #' Use help() to find more information on these functions. 
